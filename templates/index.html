@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive News Hub</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .dark-mode .navbar {
+            background-color: #1f1f1f !important;
+        }
+
+        .dark-mode .card {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            border-color: #333;
+        }
+
+        .dark-mode .sidebar {
+            background-color: #1f1f1f;
+            color: #ffffff;
+        }
+
+        .dark-mode .trending-topic {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .dark-mode .tag {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .dark-mode .newsletter-form {
+            background: linear-gradient(135deg, #444, #333);
+            color: #ffffff;
+        }
+
+        .dark-mode .stats-card {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .dark-mode .loading-spinner {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-newspaper"></i> NewsHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Trending</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bookmark"></i> Saved</a></li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-light" id="darkModeToggle">
+                        <i class="fas fa-moon"></i> <!-- Moon icon for dark mode -->
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left Sidebar -->
+            <div class="col-md-3">
+                <div class="sidebar mb-4">
+                    <h5><i class="fas fa-fire"></i> Trending Topics</h5>
+                    <div class="trending-topics mt-3">
+                        <span class="trending-topic">#Technology</span>
+                        <span class="trending-topic">#Politics</span>
+                        <span class="trending-topic">#Sports</span>
+                        <span class="trending-topic">#Science</span>
+                    </div>
+
+                    <hr>
+
+                    <h5><i class="fas fa-chart-bar"></i> News Statistics</h5>
+                    <div class="stats-card">
+                        <h3>1.2K</h3>
+                        <small>Articles Today</small>
+                    </div>
+                    <div class="stats-card">
+                        <h3>85%</h3>
+                        <small>Positive News</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-6">
+                <!-- Search Form -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="searchForm" class="d-flex gap-2">
+                            <input type="text" class="form-control" id="searchQuery" placeholder="What news are you looking for?">
+                            <input type="number" class="form-control" id="maxArticles" placeholder="Number of articles (1-10)" min="1" max="10">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Results Container -->
+                <div id="resultsContainer"></div>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Searching across sources...</p>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-md-3">
+                <div class="blog-sidebar mb-4">
+                    <h5><i class="fas fa-user-edit"></i> Featured Writers</h5>
+                    <div class="featured-writer">
+                        <img src="https://via.placeholder.com/50" alt="Writer" class="writer-avatar">
+                        <div>
+                            <h6 class="mb-0">Sarah Johnson</h6>
+                            <small>Technology Expert</small>
+                        </div>
+                    </div>
+                    <div class="featured-writer">
+                        <img src="https://via.placeholder.com/50" alt="Writer" class="writer-avatar">
+                        <div>
+                            <h6 class="mb-0">Mike Chen</h6>
+                            <small>Political Analyst</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="newsletter-form mb-4">
+                    <h5><i class="fas fa-envelope"></i> Newsletter</h5>
+                    <p class="small">Get daily news updates in your inbox!</p>
+                    <form>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your email">
+                        </div>
+                        <button type="submit" class="btn btn-light btn-sm">Subscribe</button>
+                    </form>
+                </div>
+
+                <div class="sidebar">
+                    <h5><i class="fas fa-tags"></i> Popular Tags</h5>
+                    <div class="tag-cloud">
+                        <span class="tag">AI</span>
+                        <span class="tag">Climate</span>
+                        <span class="tag">Health</span>
+                        <span class="tag">Finance</span>
+                        <span class="tag">Tech</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fetch default news on page load
+        async function fetchDefaultNews() {
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const resultsContainer = document.getElementById("resultsContainer");
+
+            loadingSpinner.style.display = "block";
+            resultsContainer.innerHTML = "";
+
+            try {
+                const response = await fetch("/api/default-news");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const articles = await response.json();
+                displayResults(articles);
+            } catch (error) {
+                console.error("Error fetching default news:", error);
+                resultsContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> Error fetching news. Please try again later.
+                    </div>
+                `;
+            } finally {
+                loadingSpinner.style.display = "none";
+            }
+        }
+
+        // Display results in the results container
+        function displayResults(articles) {
+            const resultsContainer = document.getElementById("resultsContainer");
+            
+            if (articles.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No results found. Try a different search query.
+                    </div>
+                `;
+                return;
+            }
+
+            articles.forEach((article) => {
+                const card = document.createElement("div");
+                card.className = "card article-card mb-4";
+                card.innerHTML = `
+                    <div class="card-body">
+                        <span class="category-badge">${article.category || "News"}</span>
+                        <h5 class="card-title">${article.title}</h5>
+                        <p class="card-text">${article.ai_summary || ""}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="source-info">
+                                <img src="https://via.placeholder.com/20" class="source-icon" alt="${article.source}">
+                                <small class="text-muted">${article.source}</small>
+                            </div>
+                            <div class="reading-time">
+                                <i class="far fa-clock"></i> ${estimateReadingTime(article.text)} min read
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="${article.url}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                Read More <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <div class="article-actions">
+                                <button class="btn btn-sm btn-light" title="Save">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light" title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        // Estimate reading time
+        function estimateReadingTime(text) {
+            const wordsPerMinute = 200;
+            const words = text ? text.split(/\s+/).length : 0; // Split by whitespace
+            return Math.ceil(words / wordsPerMinute) || 1;
+        }
+
+        // Dark mode toggle functionality
+        document.getElementById("darkModeToggle").addEventListener("click", () => {
+            const body = document.body;
+            body.classList.toggle("dark-mode");
+
+            // Save user preference in localStorage
+            const isDarkMode = body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", isDarkMode);
+
+            // Update the button icon
+            const icon = document.querySelector("#darkModeToggle i");
+            if (isDarkMode) {
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+            } else {
+                icon.classList.remove("fa-sun");
+                icon.classList.add("fa-moon");
+            }
+        });
+
+        // Check for saved dark mode preference on page load
+        window.addEventListener("load", () => {
+            fetchDefaultNews(); // Fetch default news on page load
+
+            const isDarkMode = localStorage.getItem("darkMode") === "true";
+            if (isDarkMode) {
+                document.body.classList.add("dark-mode");
+                const icon = document.querySelector("#darkModeToggle i");
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+            }
+        });
+
+        // Search form submission handler
+        document.getElementById("searchForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const query = document.getElementById("searchQuery").value.trim();
+            const maxArticles = document.getElementById("maxArticles").value || 3;
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const resultsContainer = document.getElementById("resultsContainer");
+
+            if (query) {
+                loadingSpinner.style.display = "block";
+                resultsContainer.innerHTML = "";
+
+                try {
+                    const response = await fetch("/api/search", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ query, max_articles: maxArticles }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const articles = await response.json();
+                    displayResults(articles);
+                } catch (error) {
+                    console.error("Error fetching news:", error);
+                    resultsContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> Error fetching news. Please try again later.
+                        </div>
+                    `;
+                } finally {
+                    loadingSpinner.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
