@@ -1,26 +1,27 @@
 name: Deploy NewsHub to GitHub Pages
+
 on:
   push:
-    branches: [main]        # deploy on every push to main
-  workflow_dispatch:         # allow manual trigger from the Actions tab
+    branches: [main]
+  workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'  # rebuild every 6 hours (keeps build timestamp fresh)
+    - cron: '0 */6 * * *'
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Inject API keys + build timestamp
         env:
@@ -33,26 +34,24 @@ jobs:
             -e "s|__GROQ_API_KEY__|${GROQ_API_KEY}|g" \
             -e "s|__BUILD_TIME__|${BUILD_TIME}|g" \
             index.html
-          echo "✅ Placeholders replaced. Build time: $BUILD_TIME"
 
-      - name: Verify all placeholders were replaced
-        run: |
-          if grep -q '__CURRENTS_API_KEY__\|__GROQ_API_KEY__' index.html; then
-            echo "❌ ERROR: One or more placeholders were not replaced."
-            echo "   → Check that CURRENTS_API_KEY and GROQ_API_KEY exist in:"
-            echo "     Settings → Secrets and variables → Actions"
-            exit 1
-          fi
-          echo "✅ All placeholders replaced."
-
-      - name: Setup GitHub Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
-      - name: Deploy to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
