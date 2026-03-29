@@ -1,0 +1,64 @@
+name: Deploy NewsHub to GitHub Pages
+on:
+  push:
+    branches: [main]        # deploy on every push to main
+  workflow_dispatch:         # allow manual trigger from the Actions tab
+  schedule:
+    - cron: '0 */6 * * *'  # rebuild every 6 hours (keeps build timestamp fresh)
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Inject API keys + build timestamp
+        env:
+          GNEWS_API_KEY:  ${{ secrets.GNEWS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          BUILD_TIME=$(date -u '+%d %b %Y, %H:%M UTC')
+
+          sed -i \
+            -e "s|__GNEWS_API_KEY__|${GNEWS_API_KEY}|g" \
+            -e "s|__GEMINI_API_KEY__|${GEMINI_API_KEY}|g" \
+            -e "s|__BUILD_TIME__|${BUILD_TIME}|g" \
+            index.html
+
+          echo "✅ Placeholders replaced. Build time: $BUILD_TIME"
+
+      - name: Verify all placeholders were replaced
+        run: |
+          if grep -q '__GNEWS_API_KEY__\|__GEMINI_API_KEY__' index.html; then
+            echo "❌ ERROR: One or more placeholders were not replaced."
+            echo "   → Check that GNEWS_API_KEY and GEMINI_API_KEY exist in:"
+            echo "     Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          echo "✅ All placeholders replaced."
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
