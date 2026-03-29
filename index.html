@@ -28,7 +28,6 @@
       --muted: #9a9088; --border: rgba(240,236,228,0.1);
     }
 
-    
     /* ── MASTHEAD ── */
     .masthead {
       background: var(--paper); border-bottom: 3px solid var(--ink);
@@ -268,7 +267,7 @@
     </div>
     <div>
       <div class="masthead-logo">News<span>Hub</span></div>
-      <div class="masthead-tagline">Live Headlines · Summarised by Gemini AI</div>
+      <div class="masthead-tagline">Live Headlines · Summarised by Groq AI</div>
     </div>
     <div class="masthead-actions">
       <button class="icon-btn" id="darkToggle" title="Dark mode">🌙</button>
@@ -276,15 +275,15 @@
     </div>
   </div>
   <nav class="masthead-nav">
-    <button class="nav-pill active" data-q="general"     data-label="Top Stories"   data-mode="top">Top Stories</button>
-    <button class="nav-pill"        data-q="technology"  data-label="Technology"     data-mode="top">Technology</button>
-    <button class="nav-pill"        data-q="world"       data-label="World"          data-mode="top">World</button>
-    <button class="nav-pill"        data-q="science"     data-label="Science"        data-mode="top">Science</button>
-    <button class="nav-pill"        data-q="business"    data-label="Business"       data-mode="top">Business</button>
-    <button class="nav-pill"        data-q="sports"      data-label="Sports"         data-mode="top">Sports</button>
-    <button class="nav-pill"        data-q="health"      data-label="Health"         data-mode="top">Health</button>
-    <button class="nav-pill"        data-q="entertainment" data-label="Entertainment" data-mode="top">Entertainment</button>
-    <button class="nav-pill"        data-q="nation"      data-label="Nation"         data-mode="top">Nation</button>
+    <button class="nav-pill active" data-q="general"       data-label="Top Stories"   data-mode="top">Top Stories</button>
+    <button class="nav-pill"        data-q="technology"    data-label="Technology"     data-mode="top">Technology</button>
+    <button class="nav-pill"        data-q="world"         data-label="World"          data-mode="top">World</button>
+    <button class="nav-pill"        data-q="science"       data-label="Science"        data-mode="top">Science</button>
+    <button class="nav-pill"        data-q="business"      data-label="Business"       data-mode="top">Business</button>
+    <button class="nav-pill"        data-q="sports"        data-label="Sports"         data-mode="top">Sports</button>
+    <button class="nav-pill"        data-q="health"        data-label="Health"         data-mode="top">Health</button>
+    <button class="nav-pill"        data-q="entertainment" data-label="Entertainment"  data-mode="top">Entertainment</button>
+    <button class="nav-pill"        data-q="national"      data-label="Nation"         data-mode="top">Nation</button>
   </nav>
 </header>
 
@@ -294,7 +293,7 @@
     <div class="widget">
       <div class="widget-title">Trending Topics</div>
       <div class="topic-list">
-        <div class="topic-item" data-q="artificial intelligence" data-label="AI" data-mode="search"><span>Artificial Intelligence</span><span class="topic-num">#1</span></div>
+        <div class="topic-item" data-q="artificial intelligence" data-label="AI"      data-mode="search"><span>Artificial Intelligence</span><span class="topic-num">#1</span></div>
         <div class="topic-item" data-q="climate change"          data-label="Climate" data-mode="search"><span>Climate Change</span><span class="topic-num">#2</span></div>
         <div class="topic-item" data-q="global economy"          data-label="Economy" data-mode="search"><span>Global Economy</span><span class="topic-num">#3</span></div>
         <div class="topic-item" data-q="space exploration"       data-label="Space"   data-mode="search"><span>Space Exploration</span><span class="topic-num">#4</span></div>
@@ -309,7 +308,7 @@
         <span class="stat-label">articles</span>
       </div>
       <div style="font-size:12px;color:var(--muted);">
-        <span class="live-dot"></span>GNews + Gemini
+        <span class="live-dot"></span>Currents + Groq
       </div>
       <div class="quota-info" id="quotaInfo" style="display:none;">
         <span id="quotaText"></span>
@@ -344,8 +343,8 @@
     <div class="loading-state" id="loadingState">
       <div class="spinner"></div>
       <div class="loading-steps">
-        <div class="loading-step" style="animation-delay:0s">Fetching from GNews…</div>
-        <div class="loading-step" style="animation-delay:1.2s">Summarising with Gemini…</div>
+        <div class="loading-step" style="animation-delay:0s">Fetching from Currents API…</div>
+        <div class="loading-step" style="animation-delay:1.2s">Summarising with Groq AI…</div>
         <div class="loading-step" style="animation-delay:2.6s">Formatting articles…</div>
       </div>
     </div>
@@ -355,7 +354,7 @@
     <div id="emptyState" class="state-card" style="display:none;">
       <div class="state-icon">📰</div>
       <h3>No articles found</h3>
-      <p>Try a different search term. GNews free plan allows 100 requests/day — you may have hit the daily limit.</p>
+      <p>Try a different search term. Currents API free plan allows 600 requests/day.</p>
     </div>
 
     <div id="errorState" class="state-card" style="display:none;">
@@ -370,21 +369,21 @@
     <div class="widget">
       <div class="widget-title">Popular Tags</div>
       <div class="tag-cloud">
-        <span class="tag-chip" data-q="AI"              data-label="AI"       data-mode="search">AI</span>
-        <span class="tag-chip" data-q="climate"         data-label="Climate"  data-mode="search">Climate</span>
-        <span class="tag-chip" data-q="health"          data-label="Health"   data-mode="search">Health</span>
-        <span class="tag-chip" data-q="finance"         data-label="Finance"  data-mode="search">Finance</span>
-        <span class="tag-chip" data-q="startups"        data-label="Startups" data-mode="search">Startups</span>
-        <span class="tag-chip" data-q="cybersecurity"   data-label="Cyber"    data-mode="search">Cyber</span>
-        <span class="tag-chip" data-q="geopolitics"     data-label="Geo"      data-mode="search">Geo</span>
-        <span class="tag-chip" data-q="renewable energy" data-label="Energy"  data-mode="search">Energy</span>
-        <span class="tag-chip" data-q="biotech"         data-label="Biotech"  data-mode="search">Biotech</span>
+        <span class="tag-chip" data-q="AI"               data-label="AI"       data-mode="search">AI</span>
+        <span class="tag-chip" data-q="climate"          data-label="Climate"  data-mode="search">Climate</span>
+        <span class="tag-chip" data-q="health"           data-label="Health"   data-mode="search">Health</span>
+        <span class="tag-chip" data-q="finance"          data-label="Finance"  data-mode="search">Finance</span>
+        <span class="tag-chip" data-q="startups"         data-label="Startups" data-mode="search">Startups</span>
+        <span class="tag-chip" data-q="cybersecurity"    data-label="Cyber"    data-mode="search">Cyber</span>
+        <span class="tag-chip" data-q="geopolitics"      data-label="Geo"      data-mode="search">Geo</span>
+        <span class="tag-chip" data-q="renewable energy" data-label="Energy"   data-mode="search">Energy</span>
+        <span class="tag-chip" data-q="biotech"          data-label="Biotech"  data-mode="search">Biotech</span>
       </div>
     </div>
     <div class="widget" style="margin-top:20px;">
       <div class="widget-title">About</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.65;">
-        NewsHub fetches live headlines via <strong style="color:var(--ink)">GNews API</strong> (browser-CORS friendly) and uses <strong style="color:var(--ink)">Google Gemini</strong> to summarise each article. Keys are injected at build time via GitHub Actions — never in source code.
+        NewsHub fetches live headlines via <strong style="color:var(--ink)">Currents API</strong> (600 req/day free, CORS-friendly) and uses <strong style="color:var(--ink)">Groq AI</strong> (Llama 3) to summarise each article. Keys are injected at build time via GitHub Actions — never in source code.
       </p>
     </div>
     <div class="widget" style="margin-top:20px;">
@@ -396,7 +395,7 @@
 </div>
 
 <footer>
-  <strong>NewsHub</strong> &nbsp;·&nbsp; GNews API + Google Gemini &nbsp;·&nbsp; GitHub Actions Deployment
+  <strong>NewsHub</strong> &nbsp;·&nbsp; Currents API + Groq AI (Llama 3) &nbsp;·&nbsp; GitHub Actions Deployment
 </footer>
 <div class="toast" id="toast"></div>
 
@@ -405,15 +404,28 @@
   //  Placeholders replaced by GitHub Actions at build time via sed.
   //  NEVER put real keys here in source control.
   // ─────────────────────────────────────────────────────────────────────
-  const GNEWS_API_KEY  = '__GNEWS_API_KEY__';
-  const GEMINI_API_KEY = '__GEMINI_API_KEY__';
+  const CURRENTS_API_KEY = '__CURRENTS_API_KEY__';
+  const GROQ_API_KEY     = '__GROQ_API_KEY__';
 
-  // GNews free plan: 100 requests/day, 10 articles/request, CORS-friendly
-  const GNEWS_BASE = 'https://gnews.io/api/v4';
+  // Currents API: 600 requests/day free, CORS-friendly
+  const CURRENTS_BASE = 'https://api.currentsapi.services/v1';
+
+  // Currents API category map (nav pill data-q → Currents category slug)
+  const CATEGORY_MAP = {
+    general:       '',           // no filter = all latest news
+    technology:    'technology',
+    world:         'world',
+    science:       'science',
+    business:      'business',
+    sports:        'sports',
+    health:        'health',
+    entertainment: 'entertainment',
+    national:      'national',
+  };
 
   let currentQuery = 'general';
   let currentLabel = 'Top Stories';
-  let currentMode  = 'top';   // 'top' = top-headlines, 'search' = keyword search
+  let currentMode  = 'top';
   let isFetching   = false;
   let requestsUsed = 0;
 
@@ -426,7 +438,7 @@
     setTimeout(() => t.classList.remove('show'), ms);
   }
 
-  // ── LIVE CLOCK (ticks every second) ─────────────────────────────────
+  // ── LIVE CLOCK ───────────────────────────────────────────────────────
   function updateClock() {
     const now = new Date();
     $('dateLine').textContent = now.toLocaleDateString('en-GB', {
@@ -450,33 +462,55 @@
   });
   applyDark(localStorage.getItem('newshub_dark') === 'true');
 
-  // ── GNEWS FETCH ──────────────────────────────────────────────────────
-  // GNews supports browser CORS requests — no proxy needed.
-  async function fetchFromGNews(query, count, mode) {
+  // ── CURRENTS API FETCH ───────────────────────────────────────────────
+  async function fetchNews_API(query, count, mode) {
     let url;
+
     if (mode === 'top') {
-      // Top headlines by category
-      url = `${GNEWS_BASE}/top-headlines?category=${encodeURIComponent(query)}&lang=en&max=${count}&apikey=${GNEWS_API_KEY}`;
+      const cat = CATEGORY_MAP[query] || '';
+      if (cat) {
+        url = `${CURRENTS_BASE}/latest-news?apiKey=${CURRENTS_API_KEY}&language=en&category=${cat}`;
+      } else {
+        url = `${CURRENTS_BASE}/latest-news?apiKey=${CURRENTS_API_KEY}&language=en`;
+      }
     } else {
-      // Keyword search
-      url = `${GNEWS_BASE}/search?q=${encodeURIComponent(query)}&lang=en&sortby=publishedAt&max=${count}&apikey=${GNEWS_API_KEY}`;
+      // keyword search
+      url = `${CURRENTS_BASE}/search?apiKey=${CURRENTS_API_KEY}&keywords=${encodeURIComponent(query)}&language=en`;
     }
 
     const res = await fetch(url);
 
-    // 429 = quota exhausted
     if (res.status === 429) {
-      throw new Error('GNEWS_QUOTA: Daily request limit reached (100/day on free plan). Resets at midnight UTC.');
+      throw new Error('CURRENTS_QUOTA: Daily request limit reached (600/day on free plan). Resets at midnight UTC.');
+    }
+    if (res.status === 401) {
+      throw new Error('CURRENTS_AUTH: Invalid API key. Check CURRENTS_API_KEY in GitHub Secrets.');
     }
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(`GNews: ${err.errors?.[0] || 'HTTP ' + res.status}`);
+      throw new Error(`Currents: ${err.message || 'HTTP ' + res.status}`);
     }
 
     const data = await res.json();
     requestsUsed++;
     updateQuotaDisplay();
-    return data.articles || [];
+
+    // Normalise Currents response → internal article shape
+    const articles = (data.news || []).slice(0, count);
+    return articles.map(a => ({
+      title:       a.title,
+      description: a.description,
+      content:     a.description,   // Currents doesn't provide full content on free plan
+      url:         a.url,
+      image:       a.image !== 'None' ? a.image : null,
+      publishedAt: a.published,
+      source:      { name: extractDomain(a.url) },
+    }));
+  }
+
+  function extractDomain(url) {
+    try { return new URL(url).hostname.replace('www.', ''); }
+    catch { return 'Unknown'; }
   }
 
   function updateQuotaDisplay() {
@@ -484,49 +518,52 @@
     const bar  = $('quotaBar');
     const txt  = $('quotaText');
     info.style.display = 'flex';
-    const pct = Math.min((requestsUsed / 100) * 100, 100);
+    const pct = Math.min((requestsUsed / 600) * 100, 100);
     bar.style.width = pct + '%';
-    txt.textContent = `${requestsUsed}/100 req today`;
+    txt.textContent = `${requestsUsed}/600 req today`;
   }
 
-  // ── GEMINI SUMMARISE ─────────────────────────────────────────────────
-  async function summariseWithGemini(title, description, content) {
+  // ── GROQ SUMMARISE ───────────────────────────────────────────────────
+  async function summariseWithGroq(title, description, content) {
     const body = [title, description, (content || '').slice(0, 800)].filter(Boolean).join('\n\n');
     const prompt = `You are a concise news editor. Write a 2–3 sentence plain-English summary of this article. Be factual, clear, and engaging. Return only the summary text — no quotes, no preamble.\n\n${body}`;
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 200 }
-        })
-      }
-    );
-    if (!res.ok) throw new Error(`Gemini: HTTP ${res.status}`);
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 200
+      })
+    });
+
+    if (!res.ok) throw new Error(`Groq: HTTP ${res.status}`);
     const data = await res.json();
-    return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+    return data?.choices?.[0]?.message?.content?.trim()
         || description
         || 'Summary not available.';
   }
 
   // ── HELPERS ──────────────────────────────────────────────────────────
-  const CAT_MAP = {
+  const CAT_GUESS = {
     'technology|ai|software|hardware|startup|apple|google|microsoft|openai': 'Technology',
-    'politics|election|government|senate|president|minister|parliament':    'Politics',
-    'science|research|discovery|nasa|space|physics|biology':                'Science',
-    'business|economy|market|stock|finance|trade|investment':               'Business',
-    'health|medicine|vaccine|cancer|disease|hospital|fda':                  'Health',
-    'sports|football|cricket|tennis|nba|fifa|olympics':                     'Sports',
-    'entertainment|movie|music|celebrity|award|netflix':                    'Entertainment',
-    'climate|environment|energy|carbon|renewable|pollution':                'Climate',
-    'crypto|bitcoin|blockchain|ethereum|nft':                               'Crypto',
+    'politics|election|government|senate|president|minister|parliament':     'Politics',
+    'science|research|discovery|nasa|space|physics|biology':                 'Science',
+    'business|economy|market|stock|finance|trade|investment':                'Business',
+    'health|medicine|vaccine|cancer|disease|hospital|fda':                   'Health',
+    'sports|football|cricket|tennis|nba|fifa|olympics':                      'Sports',
+    'entertainment|movie|music|celebrity|award|netflix':                     'Entertainment',
+    'climate|environment|energy|carbon|renewable|pollution':                 'Climate',
+    'crypto|bitcoin|blockchain|ethereum|nft':                                'Crypto',
   };
   function guessCategory(query, title) {
     const s = (query + ' ' + title).toLowerCase();
-    for (const [p, l] of Object.entries(CAT_MAP)) {
+    for (const [p, l] of Object.entries(CAT_GUESS)) {
       if (new RegExp(p).test(s)) return l;
     }
     return 'News';
@@ -537,8 +574,8 @@
   function timeAgo(iso) {
     if (!iso) return '';
     const diff = (Date.now() - new Date(iso)) / 1000;
-    if (diff < 60)   return 'just now';
-    if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+    if (diff < 60)    return 'just now';
+    if (diff < 3600)  return `${Math.floor(diff/60)}m ago`;
     if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
     return `${Math.floor(diff/86400)}d ago`;
   }
@@ -567,7 +604,6 @@
       const cat = guessCategory(currentQuery, a.title || '');
       const ago = timeAgo(a.publishedAt);
 
-      // GNews provides article image
       const imgHtml = a.image
         ? `<img class="article-thumb" src="${esc(a.image)}" alt="" loading="lazy" onerror="this.style.display='none'">`
         : '';
@@ -612,20 +648,19 @@
     btn.disabled = true;
 
     try {
-      const raw = await fetchFromGNews(query, count, mode);
+      const raw = await fetchNews_API(query, count, mode);
       if (!raw.length) {
         loading.classList.remove('active');
         emptyEl.style.display = 'block';
         return;
       }
 
-      // Summarise all articles in parallel with Gemini
+      // Summarise all articles in parallel with Groq
       const summarised = await Promise.all(
         raw.map(async a => {
           try {
-            return { ...a, ai_summary: await summariseWithGemini(a.title, a.description, a.content) };
+            return { ...a, ai_summary: await summariseWithGroq(a.title, a.description, a.content) };
           } catch {
-            // If Gemini fails, fall back to original description
             return { ...a, ai_summary: a.description || 'Summary unavailable.' };
           }
         })
@@ -637,14 +672,16 @@
       errorEl.style.display = 'block';
       $('errorTitle').textContent = 'Failed to load news';
 
-      if (e.message.startsWith('GNEWS_QUOTA')) {
-        $('errorMsg').textContent = 'You have reached the GNews free-plan limit of 100 requests per day. It resets at midnight UTC. Upgrade at gnews.io for higher limits.';
-      } else if (e.message.startsWith('GNews')) {
-        $('errorMsg').textContent = 'GNews API returned an error. Verify your GNEWS_API_KEY secret in GitHub and re-run the workflow.';
-      } else if (e.message.startsWith('Gemini')) {
-        $('errorMsg').textContent = 'Articles fetched but Gemini summarisation failed. Check your GEMINI_API_KEY secret.';
+      if (e.message.startsWith('CURRENTS_QUOTA')) {
+        $('errorMsg').textContent = 'You have reached the Currents API free-plan limit of 600 requests per day. It resets at midnight UTC.';
+      } else if (e.message.startsWith('CURRENTS_AUTH')) {
+        $('errorMsg').textContent = 'Invalid Currents API key. Verify CURRENTS_API_KEY in GitHub Secrets and re-run the workflow.';
+      } else if (e.message.startsWith('Currents')) {
+        $('errorMsg').textContent = 'Currents API returned an error. Verify your CURRENTS_API_KEY secret in GitHub and re-run the workflow.';
+      } else if (e.message.startsWith('Groq')) {
+        $('errorMsg').textContent = 'Articles fetched but Groq summarisation failed. Check your GROQ_API_KEY secret.';
       } else {
-        $('errorMsg').textContent = 'Verify GNEWS_API_KEY and GEMINI_API_KEY in GitHub Secrets, then re-run the Actions workflow.';
+        $('errorMsg').textContent = 'Verify CURRENTS_API_KEY and GROQ_API_KEY in GitHub Secrets, then re-run the Actions workflow.';
       }
 
       $('errorDetail').textContent = e.message;
@@ -688,11 +725,11 @@
   });
 
   // ── INIT ─────────────────────────────────────────────────────────────
-  if (GNEWS_API_KEY === '__GNEWS_API_KEY__' || GEMINI_API_KEY === '__GEMINI_API_KEY__') {
+  if (CURRENTS_API_KEY === '__CURRENTS_API_KEY__' || GROQ_API_KEY === '__GROQ_API_KEY__') {
     $('errorState').style.display = 'block';
     $('errorTitle').textContent = 'API keys not injected';
-    $('errorMsg').textContent = 'GitHub Actions has not replaced the key placeholders. Add GNEWS_API_KEY and GEMINI_API_KEY to your repo Secrets (Settings → Secrets → Actions) and re-run the workflow.';
-    $('errorDetail').textContent = 'Placeholders __GNEWS_API_KEY__ and/or __GEMINI_API_KEY__ were not replaced at build time.';
+    $('errorMsg').textContent = 'GitHub Actions has not replaced the key placeholders. Add CURRENTS_API_KEY and GROQ_API_KEY to your repo Secrets (Settings → Secrets → Actions) and re-run the workflow.';
+    $('errorDetail').textContent = 'Placeholders __CURRENTS_API_KEY__ and/or __GROQ_API_KEY__ were not replaced at build time.';
     $('errorDetail').classList.add('show');
   } else {
     fetchNews('general', 5, 'Top Stories', 'top');
