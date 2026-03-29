@@ -725,16 +725,16 @@
     showToast('Refreshing…');
   });
 
-  // ── INIT ─────────────────────────────────────────────────────────────
-  if (CURRENTS_API_KEY === '__CURRENTS_API_KEY__' || GROQ_API_KEY === '__GROQ_API_KEY__') {
-    $('errorState').style.display = 'block';
-    $('errorTitle').textContent = 'API keys not injected';
-    $('errorMsg').textContent = 'GitHub Actions has not replaced the key placeholders. Add CURRENTS_API_KEY and GROQ_API_KEY to your repo Secrets (Settings → Secrets → Actions) and re-run the workflow.';
-    $('errorDetail').textContent = 'Placeholders __CURRENTS_API_KEY__ and/or __GROQ_API_KEY__ were not replaced at build time.';
-    $('errorDetail').classList.add('show');
-  } else {
-    fetchNews('general', 5, 'Top Stories', 'top');
-  }
+  // // ── INIT ─────────────────────────────────────────────────────────────
+  // if (CURRENTS_API_KEY === '__CURRENTS_API_KEY__' || GROQ_API_KEY === '__GROQ_API_KEY__') {
+  //   $('errorState').style.display = 'block';
+  //   $('errorTitle').textContent = 'API keys not injected';
+  //   $('errorMsg').textContent = 'GitHub Actions has not replaced the key placeholders. Add CURRENTS_API_KEY and GROQ_API_KEY to your repo Secrets (Settings → Secrets → Actions) and re-run the workflow.';
+  //   $('errorDetail').textContent = 'Placeholders __CURRENTS_API_KEY__ and/or __GROQ_API_KEY__ were not replaced at build time.';
+  //   $('errorDetail').classList.add('show');
+  // } else {
+  fetchNews('general', 5, 'Top Stories', 'top');
+  // }
 </script>
 </body>
 </html>
