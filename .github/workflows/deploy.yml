@@ -21,19 +21,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Inject API keys + build timestamp
+      # ✅ Debug secrets (remove later)
+      - name: Debug secrets
+        run: |
+          echo "Currents length: ${#CURRENTS_API_KEY}"
+          echo "Groq length: ${#GROQ_API_KEY}"
+        env:
+          CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
+      # ✅ Inject safely
+      - name: Inject API keys + timestamp
         env:
           CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
           GROQ_API_KEY:     ${{ secrets.GROQ_API_KEY }}
         run: |
           BUILD_TIME=$(date -u '+%d %b %Y, %H:%M UTC')
-          sed -i \
-            -e "s|__CURRENTS_API_KEY__|${CURRENTS_API_KEY}|g" \
-            -e "s|__GROQ_API_KEY__|${GROQ_API_KEY}|g" \
-            -e "s|__BUILD_TIME__|${BUILD_TIME}|g" \
-            index.html
+
+          ESC_CUR=$(printf '%s\n' "$CURRENTS_API_KEY" | sed 's/[&/\]/\\&/g')
+          ESC_GRQ=$(printf '%s\n' "$GROQ_API_KEY" | sed 's/[&/\]/\\&/g')
+
+          sed -i "s|__CURRENTS_API_KEY__|$ESC_CUR|g" index.html
+          sed -i "s|__GROQ_API_KEY__|$ESC_GRQ|g" index.html
+          sed -i "s|__BUILD_TIME__|$BUILD_TIME|g" index.html
+
+      # ✅ Verify replacement
+      - name: Verify injection
+        run: |
+          if grep -q '__CURRENTS_API_KEY__\|__GROQ_API_KEY__' index.html; then
+            echo "❌ ERROR: Keys not injected"
+            exit 1
+          else
+            echo "✅ Keys injected successfully"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
