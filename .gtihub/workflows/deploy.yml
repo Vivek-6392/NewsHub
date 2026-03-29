@@ -2,10 +2,10 @@ name: Deploy NewsHub to GitHub Pages
 
 on:
   push:
-    branches: [main]          # auto-deploy on every push to main
-  workflow_dispatch:           # also allow manual trigger from Actions tab
+    branches: [main]        # deploy on every push to main
+  workflow_dispatch:         # allow manual trigger from the Actions tab
   schedule:
-    - cron: '0 */6 * * *'    # optional: rebuild every 6 hours for fresh build timestamp
+    - cron: '0 */6 * * *'  # rebuild every 6 hours (keeps build timestamp fresh)
 
 permissions:
   contents: read
@@ -24,45 +24,42 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # 1. Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Inject secrets + build timestamp into index.html
-      - name: Inject API keys and build timestamp
+      - name: Inject API keys + build timestamp
         env:
-          NEWS_API_KEY:   ${{ secrets.NEWS_API_KEY }}
+          GNEWS_API_KEY:  ${{ secrets.GNEWS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           BUILD_TIME=$(date -u '+%d %b %Y, %H:%M UTC')
 
           sed -i \
-            -e "s|__NEWS_API_KEY__|${NEWS_API_KEY}|g" \
+            -e "s|__GNEWS_API_KEY__|${GNEWS_API_KEY}|g" \
             -e "s|__GEMINI_API_KEY__|${GEMINI_API_KEY}|g" \
             -e "s|__BUILD_TIME__|${BUILD_TIME}|g" \
             index.html
 
           echo "✅ Placeholders replaced. Build time: $BUILD_TIME"
 
-      # 3. Verify placeholders were replaced (fail fast if a secret is missing)
-      - name: Verify injection
+      - name: Verify all placeholders were replaced
         run: |
-          if grep -q '__NEWS_API_KEY__\|__GEMINI_API_KEY__' index.html; then
-            echo "❌ ERROR: Placeholders were not replaced. Check that NEWS_API_KEY and GEMINI_API_KEY exist in Settings → Secrets → Actions."
+          if grep -q '__GNEWS_API_KEY__\|__GEMINI_API_KEY__' index.html; then
+            echo "❌ ERROR: One or more placeholders were not replaced."
+            echo "   → Check that GNEWS_API_KEY and GEMINI_API_KEY exist in:"
+            echo "     Settings → Secrets and variables → Actions"
             exit 1
           fi
-          echo "✅ All placeholders replaced successfully."
+          echo "✅ All placeholders replaced."
 
-      # 4. Upload the built site as a Pages artifact
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'          # deploy everything in repo root
+          path: '.'
 
-      # 5. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
