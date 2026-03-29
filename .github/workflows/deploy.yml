@@ -7,15 +7,6 @@ on:
   schedule:
     - cron: '0 */6 * * *'
 
-permissions:name: Deploy NewsHub to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-  schedule:
-    - cron: '0 */6 * * *'
-
 permissions:
   contents: read
   pages: write
@@ -33,7 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ✅ Debug secrets (you can remove later)
       - name: Debug secrets
         run: |
           echo "Currents length: ${#CURRENTS_API_KEY}"
@@ -42,7 +32,6 @@ jobs:
           CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
-      # ✅ Inject API keys using Node (robust)
       - name: Inject API keys + timestamp
         env:
           CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
@@ -63,7 +52,6 @@ jobs:
           console.log("✅ Keys injected successfully");
           EOF
 
-      # ✅ Verify replacement
       - name: Verify injection
         run: |
           if grep -q '__CURRENTS_API_KEY__\|__GROQ_API_KEY__' index.html; then
@@ -71,76 +59,6 @@ jobs:
             exit 1
           else
             echo "✅ Keys replaced successfully"
-          fi
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # ✅ Debug secrets (remove later)
-      - name: Debug secrets
-        run: |
-          echo "Currents length: ${#CURRENTS_API_KEY}"
-          echo "Groq length: ${#GROQ_API_KEY}"
-        env:
-          CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-
-      # ✅ Inject safely
-      - name: Inject API keys + timestamp
-        env:
-          CURRENTS_API_KEY: ${{ secrets.CURRENTS_API_KEY }}
-          GROQ_API_KEY:     ${{ secrets.GROQ_API_KEY }}
-        run: |
-          BUILD_TIME=$(date -u '+%d %b %Y, %H:%M UTC')
-
-          ESC_CUR=$(printf '%s\n' "$CURRENTS_API_KEY" | sed 's/[&/\]/\\&/g')
-          ESC_GRQ=$(printf '%s\n' "$GROQ_API_KEY" | sed 's/[&/\]/\\&/g')
-
-          sed -i "s|__CURRENTS_API_KEY__|$ESC_CUR|g" index.html
-          sed -i "s|__GROQ_API_KEY__|$ESC_GRQ|g" index.html
-          sed -i "s|__BUILD_TIME__|$BUILD_TIME|g" index.html
-
-      # ✅ Verify replacement
-      - name: Verify injection
-        run: |
-          if grep -q '__CURRENTS_API_KEY__\|__GROQ_API_KEY__' index.html; then
-            echo "❌ ERROR: Keys not injected"
-            exit 1
-          else
-            echo "✅ Keys injected successfully"
           fi
 
       - name: Setup Pages
