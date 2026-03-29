@@ -1,5 +1,4 @@
 name: Deploy NewsHub to GitHub Pages
-
 on:
   push:
     branches: [main]        # deploy on every push to main
